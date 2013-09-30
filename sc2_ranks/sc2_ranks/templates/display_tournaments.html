@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} SC2 RANKS: Tournaments {% endblock %}
+{% block nav-tournaments %} class="active" {% endblock %}
+{% block content %}
+<div class='col-sm-12'>
+	<h1>Current Tournaments In Database</h1>
+</div>
+<div class='col-sm-8'>
+	<table class='table'>
+		{% for tourny in tournament_list %}
+		<tr> <td><a href='{{ tourny.url }}'>{{ tourny.name }}</a></td></tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% if p1 or p2 or player %}
+	{% if success == True %}
+		<div class='alert alert-success'><strong>{{ p1.name }}</strong> has a <em>{{ percent }}%</em> chance of beating <strong>{{ p2.name }}</strong></div>
+	{% endif %}
+	{% if success == False %}
+		<div class='alert alert-danger'><strong>{{ player }}</strong> Does not Exist in Our Database Check your Spelling...people have weird names</div>
+	{% endif %}
+{% else %}
+	&nbsp;
+{% endif %}

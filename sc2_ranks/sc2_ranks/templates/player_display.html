@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %} SC2 RANKS: {{ player }} {% endblock %}
+{% block content %}
+
+<div class='col-sm-5 col-sm-offset-6 '> <h1> {{ player.name.upper }}</h1></div>
+<div class='col-sm-6'>
+	<table class='table table-striped table-hover table-bordered'>
+		<thead>
+			<tr>
+				<td class='' colspan='4'><strong>{{ player.name }}</strong> match history</td>
+				<td calss='' style='text-align:center'> Winner </td>
+			</tr>
+		</thead>
+		<tbody>
+		{% for each in matches %}
+		<tr>
+			<td class='col-sm-3'><a href='{% url 'display_match' match_id=each.id %}'>{{ each.date }}</a></td>
+			<td class='col-sm-2'><a href='{% url 'display_player' given_player=each.winner %}'>{{ each.winner }} </a></td>
+			<td class='col-sm-1'> vs </td>
+			<td class='col-sm-2'><a href='{% url 'display_player' given_player=each.loser %}'>{{ each.loser }}</a></td>
+			<td>{{ each.winner }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+</div>
+<div class='col-sm-4'>
+	<table class='table'>
+		<tr>
+			<td> <a href='http://wiki.teamliquid.net/starcraft2/{{ player.name }}'>{{ player.name }}'s Liquipedia Profile </td>
+		</tr>
+		<tr>
+			<td> <strong> Skill Level: </strong></td>
+			<td> {{ rating }} </td>
+		</tr>
+		<tr>
+			<td> <strong> Wins: </strong> </td>
+			<td> {{ player.wins }} </td>
+		</tr>
+		<tr>
+			<td> <strong> Losses: </strong> </td>
+			<td> {{ player.losses }}</td>
+		</tr>
+	</table>
+</div>
+
+
+{% endblock %}

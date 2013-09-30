@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} SC2 RANKS {% endblock %}
+{% block content %}
+<div class='col-sm-12'>
+	<h1>{{ match.winner }} <em>vs</em> {{ match.loser }}</h1>
+</div>
+<div class='col-sm-12'>
+
+	<table class='table col-sm-6'>
+		<tr>
+			<td> Tournament </td>
+			<td> <a href='{{ match.tournament.url }}'> {{ match.tournament }} </a> </td>
+		</tr>
+		<tr>
+			<td> Winner </td>
+			<td> {{ match.winner }} </td>
+		</tr>
+		<tr>
+			<td> Loser </td>
+			<td> {{ match.loser }} </td>
+		</tr>
+		<tr>
+	</table>
+</div>
+
+
+
+{% endblock %}
