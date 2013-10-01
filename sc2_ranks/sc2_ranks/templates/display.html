@@ -19,7 +19,7 @@
 	{% for player, skill, index in zipped_list %}
 	<tr>
 		<td class='col-sm-1'><div> {{ index }} </div></td>
-		<td class='col-sm-3'><div> <a href='{% url 'display_player' given_player=player.name %}'>{{ player }}</a> <img src='{{ STATIC_URL }}/images/{{ player.race }}.png' height= '15px' /> </div></td>
+		<td class='col-sm-3'><div> <a href='{% url 'display_player' given_player=player.name %}'>{{ player }}</a> <img src='{{ STATIC_URL }}/images/{{ player.race }}.png' height= '15px' title='{{ player.race }}' /> </div></td>
 		<td class='col-sm-1'> {{ player.country }} </td>
 		<td class='col-sm-1'><div> {{ skill }} </div></td>
 	</tr>

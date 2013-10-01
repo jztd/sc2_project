@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpRequest
 from django.template import RequestContext
 
 #from the project
-import ranking
 from ranking.models import player, match, tournament
 
 #trueskill crap
@@ -12,7 +11,6 @@ from trueskill import Rating, rate_1vs1, TrueSkill, expose
 from trueskill.backends import cdf
 
 #other stuff
-from datetime import date
 from bs4 import BeautifulSoup
 import re
 import urllib2
