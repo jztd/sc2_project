@@ -2,15 +2,16 @@
 {% block title %} SC2 Player Ranks {% endblock %}
 {% block nav-home %} class="active" {% endblock %}
 {% block content %}
-<div class='col-sm-8 col-sm-offset-4'>
+<div class='col-sm-4 col-sm-offset-4'>
 	<h1> LeaderBoard </h1>
 </div>
-<div class='col-sm-8 col-sm-offset-2'>
+<div class='col-sm-6 col-sm-offset-2'>
 <table class='table table-striped table-bordered table-hover'>
 	<thead>
 		<tr>
 		<td class='col-sm-1'> <strong>Rank</strong> </td>
 		<td class='col-sm-3'> <strong>Player Name</strong> </td>
+		<td class='col-sm-1'> <strong> Country </strong> </td>
 		<td class='col-sm-1'> <strong>Skill Level</strong> </td>
 	</tr>
 	</thead>
@@ -18,7 +19,8 @@
 	{% for player, skill, index in zipped_list %}
 	<tr>
 		<td class='col-sm-1'><div> {{ index }} </div></td>
-		<td class='col-sm-3'><div> <a href='{% url 'display_player' given_player=player %}'>{{ player }} </a> </div></td>
+		<td class='col-sm-3'><div> <a href='{% url 'display_player' given_player=player.name %}'>{{ player }}</a> <img src='{{ STATIC_URL }}/images/{{ player.race }}.png' height= '15px' /> </div></td>
+		<td class='col-sm-1'> {{ player.country }} </td>
 		<td class='col-sm-1'><div> {{ skill }} </div></td>
 	</tr>
 	{% endfor %}

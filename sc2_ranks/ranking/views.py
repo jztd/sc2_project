@@ -20,6 +20,23 @@ from datetime import datetime, date
 from math import sqrt
 from decimal import Decimal
 
+def get_country_race(name):
+	url = urllib2.urlopen('http://wiki.teamliquid.net/starcraft2/'+name)
+	soup = BeautifulSoup(url)
+	table = soup.find_all('tr', valign='top')
+	for each in table:
+		if each.find('th') == None:
+			continue
+		else:
+			if each.find('th').get_text().strip() == 'Race:':
+				race = each.find('th').findNext('td').get_text()
+			elif each.find('th').get_text().strip() == 'Country:':
+				country = each.find('th').findNext('td').get_text()
+	country_race_list = [country.strip(),race.strip()]
+	return country_race_list
+
+
+
 def Pwin(rA=Rating(), rB=Rating()):
     deltaMu = rA.mu - rB.mu
     rsss = sqrt(rA.sigma**2 + rB.sigma**2)
@@ -57,10 +74,12 @@ def check_players_exist(player_1_name, player_2_name):
 	player_two = player.objects.filter(name=unicode(player_2_name))
 	# check if each one exists, if they don't make a new one
 	if player_one.exists() == False:
-		player_1 = player(name=player_1_name, mu=25, sigma = 8.333)
+		country_race = get_country_race(player_1_name)
+		player_1 = player(name=player_1_name, mu=25, sigma = 8.333, country=country_race[0], race = country_race[1])
 		player_1.save()
 	if player_two.exists() == False:
-		player_2 = player(name=player_2_name, mu=25, sigma= 8.333)
+		country_race = get_country_race(player_2_name)
+		player_2 = player(name=player_2_name, mu=25, sigma= 8.333, country=country_race[0], race=country_race[1])
 		player_2.save()
 
 
@@ -177,7 +196,7 @@ def display(request):
 		player_rating = Decimal(expose(Rating(float(player_mu), float(player_sigma))))
 		if player_rating in player_list:
 			player_rating += Decimal(.000000000000000000000000001)
-		player_list[player_rating] = each.name
+		player_list[player_rating] = each
 	sorted_player_list = sorted(player_list, reverse=True)
 	for each in sorted_player_list:
 		final_list.append(player_list[each])

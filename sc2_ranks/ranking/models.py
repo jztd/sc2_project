@@ -3,7 +3,8 @@ from datetime import date
 
 class player(models.Model):
 	name = models.CharField(max_length= 100, blank=False)
-	most_played_race = models.CharField(max_length = 50, blank=True)
+	race = models.CharField(max_length = 50, blank=True)
+	country = models.CharField(max_length = 50, blank = True)
 	#jesus this was stupid...so all the data that trueskill needs has to be saved
 	sigma = models.DecimalField(decimal_places = 4, max_digits = 10)
 	mu = models.DecimalField(decimal_places = 4, max_digits = 10)
