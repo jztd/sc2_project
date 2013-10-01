@@ -3,8 +3,8 @@ from datetime import date
 
 class player(models.Model):
 	name = models.CharField(max_length= 100, blank=False)
-	race = models.CharField(max_length = 50, blank=True)
-	country = models.CharField(max_length = 50, blank = True)
+	race = models.CharField(max_length = 50, blank=True, default='Unknown')
+	country = models.CharField(max_length = 50, default='Unknown')
 	#jesus this was stupid...so all the data that trueskill needs has to be saved
 	sigma = models.DecimalField(decimal_places = 4, max_digits = 10)
 	mu = models.DecimalField(decimal_places = 4, max_digits = 10)
@@ -29,6 +29,7 @@ class match(models.Model):
 class tournament(models.Model):
 	name = models.CharField(max_length= 500, blank=False)
 	url = models.URLField(max_length = 500)
+	matches = models.ManyToManyField('match', related_name='tournament_matches')
 
 	def __unicode__(self):
 		return self.name

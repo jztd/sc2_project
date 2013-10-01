@@ -19,19 +19,22 @@ from math import sqrt
 from decimal import Decimal
 
 def get_country_race(name):
-	url = urllib2.urlopen('http://wiki.teamliquid.net/starcraft2/'+name)
-	soup = BeautifulSoup(url)
-	table = soup.find_all('tr', valign='top')
-	for each in table:
-		if each.find('th') == None:
-			continue
-		else:
-			if each.find('th').get_text().strip() == 'Race:':
-				race = each.find('th').findNext('td').get_text()
-			elif each.find('th').get_text().strip() == 'Country:':
-				country = each.find('th').findNext('td').get_text()
-	country_race_list = [country.strip(),race.strip()]
-	return country_race_list
+	try:
+		url = urllib2.urlopen('http://wiki.teamliquid.net/starcraft2/'+name)
+		soup = BeautifulSoup(url)
+		table = soup.find_all('tr', valign='top')
+		for each in table:
+			if each.find('th') == None:
+				continue
+			else:
+				if each.find('th').get_text().strip() == 'Race:':
+					race = each.find('th').findNext('td').get_text()
+				elif each.find('th').get_text().strip() == 'Country:':
+					country = each.find('th').findNext('td').get_text()
+		country_race_list = [country.strip(),race.strip()]
+		return country_race_list
+	except:
+		pass
 
 
 
@@ -73,11 +76,17 @@ def check_players_exist(player_1_name, player_2_name):
 	# check if each one exists, if they don't make a new one
 	if player_one.exists() == False:
 		country_race = get_country_race(player_1_name)
-		player_1 = player(name=player_1_name, mu=25, sigma = 8.333, country=country_race[0], race = country_race[1])
+		if country_race is not None:
+			player_1 = player(name=player_1_name, mu=25, sigma = 8.333, country=country_race[0], race=country_race[1])
+		else:
+			player_1 = player(name=player_1_name, mu=25, sigma=8.333)
 		player_1.save()
 	if player_two.exists() == False:
 		country_race = get_country_race(player_2_name)
-		player_2 = player(name=player_2_name, mu=25, sigma= 8.333, country=country_race[0], race=country_race[1])
+		if country_race is not None:
+			player_2 = player(name=player_2_name, mu=25, sigma= 8.333, country=country_race[0], race=country_race[1])
+		else:
+			player_2 = player(name=player_2_name, mu=25, sigma= 8.333)
 		player_2.save()
 
 
@@ -98,8 +107,11 @@ def create_new_match(player_1, player_2, winner, date, tournament_name):
 		new.save()
 		new.players.add(player_one)
 		new.players.add(player_two)
+	tournament_object.matches.add(new)
 	new.date = date
 	new.save()
+	tournament_object.matches.add(new)
+	tournament_object.save()
 
 def update_wins(player_1, player_2, winner):
 	# here we update the wins of the players in a match yaaay
