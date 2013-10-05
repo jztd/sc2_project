@@ -58,8 +58,9 @@ def get_tournament_name(website, stage):
 	page = urllib2.urlopen(website)
 	soup = BeautifulSoup(page)
 	raw_tourny_title = soup.title.get_text()
-	tourny_title, garbage, more_garbage = raw_tourny_title.split('-')
-	tourny_title = tourny_title.strip()
+
+	full_tourny_title = raw_tourny_title.split('-')
+	tourny_title = full_tourny_title[0].strip()
 	if stage == 'b':
 		tourny_title += ' Bracket'
 	elif stage == 'g':
@@ -201,12 +202,13 @@ def display(request):
 	player_skills = []
 	player_rounded_skills = []
 	for each in all_players:
-		player_mu = each.mu
-		player_sigma = each.sigma
-		player_rating = Decimal(expose(Rating(float(player_mu), float(player_sigma))))
-		if player_rating in player_list:
-			player_rating += Decimal(.000000000000000000000000001)
-		player_list[player_rating] = each
+		if each.wins + each.losses > 5:
+			player_mu = each.mu
+			player_sigma = each.sigma
+			player_rating = Decimal(expose(Rating(float(player_mu), float(player_sigma))))
+			#if player_rating in player_list:
+			#	player_rating += Decimal(.000000000000000000000000001)
+			player_list[player_rating] = each
 	sorted_player_list = sorted(player_list, reverse=True)
 	for each in sorted_player_list:
 		final_list.append(player_list[each])
@@ -349,7 +351,7 @@ def player_comparison(request):
 		p1_sigma = p1_object.sigma
 		p2_mu = p2_object.mu
 		p2_sigma = p2_object.sigma
-		win_percent = Pwin(Rating(float(p1_mu),float(p2_sigma)), Rating(float(p2_mu), float(p2_sigma)))
+		win_percent = Pwin(Rating(float(p1_mu),float(p1_sigma)), Rating(float(p2_mu), float(p2_sigma)))
 		win_percent = round((win_percent*100), 2)
 		return render_to_response('percent.html', {'success':True, 'percent': win_percent, 'p1': p1_object, 'p2':p2_object} ,context_instance=RequestContext(request))
 	else:
