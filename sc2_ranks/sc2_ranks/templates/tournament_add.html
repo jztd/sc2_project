@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<script>
+$(document).ready(function(){
+	$('#submit-button').click(function(){
+		url = $('#website-input').val();
+		stage = $('#stage-input').val();
+		if (stage == 'groupstage')
+		{
+			window.location.replace("/scrape_liquid_groupstages/"+url);
+		}
+		else if (stage == 'bracket')
+		{
+			window.location.replace("/scrape_liquid_brackets/"+url);
+		}
+	});
+});
+
+$(document).ready(function(){
+	$('#recalc').click(function(){
+		window.location.replace("/update_this_shit/");
+	});
+});
+
+</script>
+
+<div class='col-sm-6 col-sm-offset-3'>
+<form role="form" class="form-horizontal">
+	<div class='form-group'>
+	<label for='website-input' class='control-label'> website </label>
+	<input id='website-input' class='form-control' type='text' />
+	<select name='stage-selection' id='stage-input'>
+		<option value='bracket'> Bracket </option>
+		<option value='groupstage'> GroupStage </option>
+	</select>
+	<button id='submit-button' class='btn btn-default' type='button'> Scrape Website </button>
+	</div>
+</form>
+</div>
+
+<div class='col-sm-6 col-sm-offset-3'> Below fucks with the actual ratings and could take an hour to process at which times...the site will be down....please be careful </div> 
+<div class='col-sm-6 col-sm-offset-3'>
+	<form role="form" class="form-vertical">
+		<button id='recalc' class='btn btn-default'> recalculate ratings </button>
+	</form>
+</div>
+{% endblock %}

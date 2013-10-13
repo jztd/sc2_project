@@ -257,7 +257,7 @@ def scrape_liquid_groupstages(request, url):
 					winners = [scores[0].get_text(), scores[1].get_text()]
 					# if a person withdrew we don't want that data so break the loop
 					if winners[0].strip().upper() == 'W' or winners[1].strip().upper() == 'W':
-						break
+						continue
 					if int(scores[0].get_text()) > int(scores[1].get_text()):
 						winner = players[0].get_text()
 					else:
@@ -313,13 +313,13 @@ def scrape_liquid_brackets(request, url):
 				elif int(player_2_score) > int(player_1_score):
 					winner = player_2
 				else:
-					break
+					continue
 				check_players_exist(player_1, player_2)
 				create_new_match(player_1, player_2, winner, date_object, tournament.objects.get(name=tournament_name))
 				update_wins(player_1, player_2, winner)
 				update_rating(player_1, player_2, winner)
 			except:
-				break
+				continue
 	return HttpResponse('OK')
 
 def display_player(request, given_player):
@@ -356,6 +356,28 @@ def player_comparison(request):
 		return render_to_response('percent.html', {'success':True, 'percent': win_percent, 'p1': p1_object, 'p2':p2_object} ,context_instance=RequestContext(request))
 	else:
 		return render(request, 'player_comparison.html', {})
+def recalc_ratings(request):
+	#this is going to recalculate ratings based on matches still in the system...hold onto your butts
+	#please if anyone has a better idea let me know...this is probably the most in efficient way to do this
+	all_tournaments = tournament.objects.all()
+	all_players = player.objects.all()
+	# reset every fucking player
+	for each in all_players:
+		each.mu = 25
+		each.sigma = 8.333
+		each.wins = 0
+		each.losses = 0
+		each.save()
+	for tournament_ in all_tournaments:
+		matches = match.objects.filter(tournament__name = tournament_)
+		for match_ in matches:
+			player_1 = match_.winner
+			player_2 = match_.loser
+			update_rating(player_1, player_2, player_1)
+			update_wins(player_1, player_2, player_1)
+	return HttpResponse('....It Worked...I Hope')
+def manage(request):
+	return render(request, 'tournament_add.html')
 
 
 

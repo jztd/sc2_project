@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^match/(?P<match_id>.{0,15})/$', 'ranking.views.display_match', name='display_match'),
     url(r'^tournaments', 'ranking.views.display_tournament' ,  name='display_tournaments'),
     url(r'^player_comparison' , 'ranking.views.player_comparison', name='player_comparison'),
+    url(r'^manage', 'ranking.views.manage', name='manage'),
+    url(r'^update_this_shit', 'ranking.views.recalc_ratings', name='recalc_ratings'),
     #url(r'^compare', 'ranking.views.calc_percent_win' ,name='calc_percent_win'),
     #url(r'^sc2_ranks/', include('sc2_ranks.foo.urls')),
 
